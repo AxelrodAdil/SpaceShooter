@@ -10,7 +10,7 @@ public class Planet : MonoBehaviour
     Vector2 min;
     Vector2 max;
 
-    int previousScoreLevel = 0;
+    int previousScoreLevel = 3;
     
     void Awake()
     {
@@ -41,7 +41,7 @@ public class Planet : MonoBehaviour
     
     void SetPlanetSpeed()
     {
-        int currentScoreLevel = scoreUIText.GetComponent<GameScore>().Score / 1000;
+        int currentScoreLevel = scoreUIText.GetComponent<GameScore>().Score / 2000;
         if (currentScoreLevel > previousScoreLevel)
         {
             speed = speed + 1f;

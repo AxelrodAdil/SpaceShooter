@@ -5,6 +5,12 @@ public class EnemySpawner : MonoBehaviour
     public GameObject EnemyGO;
 
     float maxSpawnRateInSeconds = 5f;
+    GameObject scoreUIText;
+    
+    public void Start()
+    {
+        scoreUIText = GameObject.FindGameObjectWithTag("ScoreTextTag");
+    }
 
     void SpawnEnemy()
     {
@@ -23,6 +29,10 @@ public class EnemySpawner : MonoBehaviour
 
     void IncreaseSpawnRate()
     {
+        if (scoreUIText.GetComponent<GameScore>().Score / 1000 > 0)
+        {
+            maxSpawnRateInSeconds = 2f;
+        }
         if (maxSpawnRateInSeconds > 1f)
         {
             maxSpawnRateInSeconds--;
@@ -36,7 +46,7 @@ public class EnemySpawner : MonoBehaviour
 
     public void ScheduleEnemySpawner()
     {
-        maxSpawnRateInSeconds = 5f;
+        maxSpawnRateInSeconds = scoreUIText.GetComponent<GameScore>().Score / 1000 > 0 ? 2f : 5f;
         Invoke("SpawnEnemy", maxSpawnRateInSeconds);
         InvokeRepeating("IncreaseSpawnRate", 0f, 30f);
     }

@@ -29,7 +29,7 @@ public class PlayerBullet : MonoBehaviour
         int currentScoreLevel = scoreUIText.GetComponent<GameScore>().Score / 1000;
         if (currentScoreLevel > previousScoreLevel)
         {
-            speed = speed + 1f;
+            speed = speed + 0.5f;
             previousScoreLevel = currentScoreLevel;
         }
     }
