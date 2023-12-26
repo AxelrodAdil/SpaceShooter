@@ -9,9 +9,11 @@ public class PlayerController : MonoBehaviour
     public GameObject BulletSecondPosition;
     public GameObject Explosion;
     public Text LivesUIText;
+    GameObject scoreUIText;
 
     const int MaxLives = 5;
     int lives;
+    int previousScoreLevel = 0;
 
     public float speed;
 
@@ -21,10 +23,12 @@ public class PlayerController : MonoBehaviour
         LivesUIText.text = lives.ToString();
         transform.position = new Vector2(0, 0);
         gameObject.SetActive(true);
+        scoreUIText = GameObject.FindGameObjectWithTag("ScoreTextTag");
     }
 
     void Update()
     {
+        SetPlayerSpeed();
         if (Input.GetKeyDown("space"))
         {
             gameObject.GetComponent<AudioSource>().Play();
@@ -37,6 +41,16 @@ public class PlayerController : MonoBehaviour
         float y = Input.GetAxisRaw("Vertical");
         Vector2 direction = new Vector2(x, y).normalized;
         Move(direction);
+    }
+    
+    void SetPlayerSpeed()
+    {
+        int currentScoreLevel = scoreUIText.GetComponent<GameScore>().Score / 1000;
+        if (currentScoreLevel > previousScoreLevel)
+        {
+            speed = speed + 1f;
+            previousScoreLevel = currentScoreLevel;
+        }
     }
 
     void Move(Vector2 direction)

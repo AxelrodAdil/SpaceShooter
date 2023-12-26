@@ -5,11 +5,19 @@ public class EnemyBullet : MonoBehaviour
     float speed;
     Vector2 _direction;
     bool isReady;
+    GameObject scoreUIText;
+    
+    int previousScoreLevel = 0;
 
     void Awake()
     {
         speed = 5f;
         isReady = false;
+    }
+    
+    public void Start()
+    {
+        scoreUIText = GameObject.FindGameObjectWithTag("ScoreTextTag");
     }
 
     public void SetDirection(Vector2 direction)
@@ -20,6 +28,7 @@ public class EnemyBullet : MonoBehaviour
     
     void Update()
     {
+        SetEnemyBulletSpeed();
         if (!isReady) return;
         Vector2 position = transform.position;
         position += _direction * speed * Time.deltaTime;
@@ -29,6 +38,16 @@ public class EnemyBullet : MonoBehaviour
         if (!(transform.position.x < min.x) && !(transform.position.x > max.x) &&
             !(transform.position.y < min.y) && !(transform.position.y > max.y)) return;
         Destroy(gameObject);
+    }
+    
+    void SetEnemyBulletSpeed()
+    {
+        int currentScoreLevel = scoreUIText.GetComponent<GameScore>().Score / 1000;
+        if (currentScoreLevel > previousScoreLevel)
+        {
+            speed = speed + 1f;
+            previousScoreLevel = currentScoreLevel;
+        }
     }
 
     void OnTriggerEnter2D(Collider2D col)
